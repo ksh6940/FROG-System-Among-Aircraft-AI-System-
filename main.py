@@ -75,13 +75,41 @@ for i in range(len(tr_list)-1):
     }
     data_list_child2.append(airspace_data)
 
-print(data_list_child2)
-
 # 드라이버 종료
 driver.quit()
 print("드라이버 종료")
-# driver = webdriver.Chrome() 
-# driver.get('https://www.airportal.go.kr/airplane/airspace03.do')
-# print("웹페이지 로딩 완료")
+driver = webdriver.Chrome() 
+driver.get('https://www.airportal.go.kr/airplane/airspace03.do')
+print("웹페이지 로딩 완료")
+
 
 '''비행제한구역/군훈련공역'''
+right_div = select_parent_tag()
+print(right_div.text)
+
+
+
+
+
+
+
+''' 데이터 출력 '''
+data_child1 = {
+    'category': '초경량비행장치 비행공역',
+    'data': data_list_child1
+}
+
+data_child2 = {
+    'category': '비행금지구역',
+    'data': data_list_child2
+}
+
+# 데이터프레임으로 변환
+df = pd.DataFrame(data_child1)
+df2 = pd.DataFrame(data_child2)
+
+# merge df
+df = pd.concat([df, df2], ignore_index=True)
+
+# 데이터프레임을 CSV로 저장 
+df.to_csv('airspace_data.csv', index=False, encoding='utf-8-sig')
